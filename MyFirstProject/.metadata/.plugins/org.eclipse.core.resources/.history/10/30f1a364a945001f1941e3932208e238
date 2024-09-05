@@ -1,0 +1,11 @@
+package dao;
+
+public interface ScannerDao {
+	void Scan1Line();
+	
+	void Scan2Lines();
+	
+	void Scan3Lines();
+	
+	void Scan4Lines();
+}

@@ -1,0 +1,39 @@
+package go;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class aboutIO {
+	public static void main(String[] args) {
+		aboutCRUD aboutCRUD = new aboutCRUD();
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter("C:\\Users\\User\\Documents\\getresult.csv");
+			ArrayList<String> list = aboutCRUD.SelectAll();
+			int i = 0;
+			int listsize = list.size();
+			while (i < listsize) {
+				String rowString = list.get(i);
+				writer.append(rowString);
+				i++;
+				System.out.println("ok");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+//				set.close();
+				writer.close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
+	}
+	
+	
+}

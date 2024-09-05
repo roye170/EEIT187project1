@@ -1,0 +1,119 @@
+package go;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import utils.JDBCutil;
+
+public class aboutCRUD {
+	public static void main(String[] args) {
+		aboutCRUD aboutCRUD = new aboutCRUD();
+		aboutCRUD.SelectAll();
+	}
+	//新增(全部)
+	public void Insert(String name, String country, String lacation, String type) {
+		String sql = "INSERT INTO firstproject(name, country, lacation, type) VALUES(?,?,?,?)";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.setString(2, country);
+			statement.setString(3, lacation);
+			statement.setString(4, type);
+			statement.execute();
+			System.out.println("已成功遞交\""+name+"\"的申請");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	//刪除單筆資料
+	public void DeleteByname(String name) {
+		String sql = "DELETE FROM firstproject WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.execute();
+			System.out.println("已成功刪除\""+name+"\"的資料");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	//修改name
+	public void UpdateNameByName(String aftername, String beforename) {
+		String sql = "UPDATE firstproject SET name = ? WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, aftername);
+			statement.setString(2, beforename);
+			statement.execute();
+			System.out.println("已成功更新\""+beforename+"\"為\""+aftername+"\"");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	//修改country
+	public void UpdateCountryByName(String name, String aftercountry) {
+		String sql = "UPDATE firstproject SET country = ? WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, aftercountry);
+			statement.setString(2, name);
+			statement.execute();
+			System.out.println("已成功更新\""+name+"\"的國家為\""+aftercountry+"\"");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	//查詢
+	public void SelectAll() {
+		String sql = "SELECT * FROM firstproject";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			ResultSet resultset = statement.executeQuery();
+			String name = "地名: " + resultset.getString("name");
+			String country = "國家: " + resultset.getString("country");
+			String location = "所在地: " + resultset.getString("lacation");
+			String year = "入選年份: " + resultset.getString("year");
+			String type = "遺產種類: " + resultset.getString("type");
+			while (resultset.next()) {
+				System.out.println(name+","+country+","+location+","+year+","+type);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	
+	
+	
+}

@@ -1,0 +1,27 @@
+package core;
+
+public class TestCRUD {
+
+	public static void main(String[] args) {
+		TestCRUD testCRUD = new TestCRUD();
+		testCRUD.testinsert();
+	}
+	
+	public void testinsert() throws InterruptedException {
+		CRUD crud = new CRUD();
+		System.out.println("請輸入要插入的名稱");
+		String name = crud.scanInfo();
+		Thread.sleep(1000);
+		System.out.println("請輸入要插入的國家");
+		String county = crud.scanInfo();
+		Thread.sleep(1000);
+		System.out.println("請輸入要插入的所在地");
+		String location = crud.scanInfo();
+		Thread.sleep(1000);
+		System.out.println("請輸入要插入的遺產種類");
+		String type = crud.scanInfo();
+		Thread.sleep(1000);
+		crud.insertInfo(name, county, location, type);
+	}
+
+}

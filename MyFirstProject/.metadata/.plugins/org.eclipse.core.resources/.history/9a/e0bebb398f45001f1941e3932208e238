@@ -1,0 +1,7 @@
+package dao;
+
+public class serverTable {
+	String name;
+	String country;
+	String location;
+}

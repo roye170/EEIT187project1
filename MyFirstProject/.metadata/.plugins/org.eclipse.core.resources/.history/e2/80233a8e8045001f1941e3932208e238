@@ -1,0 +1,10 @@
+package go;
+
+public class aboutIO {
+	public static void main(String[] args) {
+		aboutCRUD aboutCRUD = new aboutCRUD();
+		aboutCRUD.SelectAll();
+	}
+	
+	
+}

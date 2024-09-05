@@ -1,0 +1,82 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
+import utils.JDBCutil;
+
+public class serverTableImpl implements serverTableDao{
+
+	@Override
+	public void insertInfo(String name, String country, String location, String type) {
+		String sql = "INSERT INTO firstproject(name, country, location, type) VALUES(?,?,?,?)";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.setString(2, country);
+			statement.setString(3, location);
+			statement.setString(4, type);
+			statement.execute();
+			System.out.println("已成功遞交\""+name+"\"的申請");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+
+	@Override
+	public void deleteInfo(serverTable serverTable) {
+		String sql = "DELETE FROM firstproject WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			String name = serverTable.getName();
+			statement.setString(1, name);
+			statement.execute();
+			System.out.println("已成功刪除\""+name+"\"的資料");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+
+	@Override
+	public void updateInfo(serverTable serverTable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<serverTable> selectInfo(serverTable serverTable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<serverTable> selectBycountry(String country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<serverTable> selectByType(String Type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<serverTable> selectByCountryAndType(String country, String Type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

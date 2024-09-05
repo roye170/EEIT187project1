@@ -1,0 +1,31 @@
+package go;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import utils.JDBCutil;
+
+public class aboutCRUD {
+	
+	//新增(全部)
+	public void jdbcByInsert(String name, String country, String lacation, Date year, String type) {
+		String sql = "INTSERT INTO firstproject VALUES(?,?,?,?,?)";
+		Connection connection = null;
+		try {
+			connection = JDBCutil.getConnection();
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.setString(2, country);
+			statement.setString(0, sql);, 0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+}

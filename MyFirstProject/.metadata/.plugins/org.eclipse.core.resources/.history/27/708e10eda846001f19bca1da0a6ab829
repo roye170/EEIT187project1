@@ -1,0 +1,30 @@
+package core;
+
+import java.io.IOException;
+import java.text.ParseException;
+
+public class TestCRUD {
+
+	public static void main(String[] args) throws InterruptedException, ParseException, IOException {
+		TestCRUD testCRUD = new TestCRUD();
+		testCRUD.testinsert();
+		//aboutDataBase aboutDataBase = new aboutDataBase();
+		//aboutDataBase.insertInto();
+		
+	}
+	
+	public void testinsert() throws InterruptedException, IOException {
+		CRUD crud = new CRUD();
+		System.out.println("請輸入要插入的名稱");
+		String name = crud.testInputStream();
+		System.out.println(name);
+		System.out.println("請輸入要插入的國家");
+		String county = crud.testInputStream();
+		System.out.println("請輸入要插入的所在地");
+		String location = crud.testInputStream();
+		System.out.println("請輸入要插入的遺產種類");
+		String type = crud.testInputStream();
+		crud.insertInfo(name, county, location, type);
+	}
+
+}

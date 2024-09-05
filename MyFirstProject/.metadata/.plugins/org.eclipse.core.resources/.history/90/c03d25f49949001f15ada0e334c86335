@@ -1,0 +1,13 @@
+package dao;
+
+import java.util.List;
+
+public interface ScannerDao {
+	List<String> Scan1Line();
+	
+	List<String> Scan2Lines();
+	
+	List<String> Scan3Lines();
+	
+	List<String> Scan4Lines();
+}

@@ -1,0 +1,11 @@
+package core;
+
+import java.util.Scanner;
+
+public class ScannerTest {
+	public static void main(String[] args) {
+		ScannerTest scanner = new ScannerTest();
+		Scanner scanner2 = new Scanner(System.in);
+		
+	}
+}

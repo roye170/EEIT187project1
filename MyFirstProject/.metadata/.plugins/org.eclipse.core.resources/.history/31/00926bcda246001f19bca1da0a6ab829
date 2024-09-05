@@ -1,0 +1,34 @@
+package core;
+
+import java.text.ParseException;
+
+import go.aboutDataBase;
+
+public class TestCRUD {
+
+	public static void main(String[] args) throws InterruptedException, ParseException {
+		TestCRUD testCRUD = new TestCRUD();
+		testCRUD.testinsert();
+		//aboutDataBase aboutDataBase = new aboutDataBase();
+		//aboutDataBase.insertInto();
+		
+	}
+	
+	public void testinsert() throws InterruptedException {
+		CRUD crud = new CRUD();
+		System.out.println("請輸入要插入的名稱");
+		String name = crud.scanInfo();
+		Thread.sleep(1000);
+		System.out.println("請輸入要插入的國家");
+		Thread.sleep(1000);
+		String county = crud.scanInfo();
+		System.out.println("請輸入要插入的所在地");
+		Thread.sleep(1000);
+		String location = crud.scanInfo();
+		System.out.println("請輸入要插入的遺產種類");
+		Thread.sleep(1000);
+		String type = crud.scanInfo();
+		crud.insertInfo(name, county, location, type);
+	}
+
+}

@@ -1,0 +1,45 @@
+package go;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class aboutIO {
+	public static void main(String[] args) {
+		aboutCRUD aboutCRUD = new aboutCRUD();
+		ResultSet set = aboutCRUD.SelectAll();
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter("C:\\Users\\User\\Documents\\getresult.csv");
+			while (set.next()) {
+				String name = "地名: " + set.getString("name");
+				String country = "國家: " + set.getString("country");
+				String location = "所在地: " + set.getString("lacation");
+				String year = "入選年份: " + set.getString("year");
+				String type = "遺產種類: " + set.getString("type");
+				writer.append(name+","+country+","+location+","+year+","+type);
+				System.out.println("ok");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				set.close();
+				writer.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+}

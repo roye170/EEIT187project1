@@ -1,0 +1,15 @@
+package core;
+
+import dao.ServerTable;
+
+public class TestCRUD {
+
+	public static void main(String[] args) {
+		CRUD2 crud2 = new CRUD2();
+		//crud2.insertInfo("test", "test", "test", "test");
+		crud2.deleteInfo("test");
+		
+		
+	}
+
+}

@@ -1,0 +1,144 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.security.PublicKey;
+
+import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
+
+import core.CRUD;
+
+public class GUI implements ActionListener {
+	
+	JFrame jFrame = new JFrame("世界遺產");
+	JPanel jPanel = new JPanel();
+	JTable jTable;
+	JScrollPane jScrollPane;
+	JButton insert;
+	JButton delete;
+	JButton select;
+	JButton refresh;
+	JTextField fieldOfName;
+	JTextField fieldOfCountry;
+	JTextField fieldOfLocation;
+	JTextField fieldOfType;
+	
+	public static void main(String[] args) {
+		GUI gui = new GUI();
+		gui.getTable();
+	}
+	
+	//table
+	public void getTable() {
+		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		CustomTable customTable = new CustomTable();
+		//表格
+		jTable = new JTable(customTable);
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(580, 450));
+		jPanel.add(jScrollPane, BorderLayout.NORTH);
+		jFrame.add(jPanel);
+		//按鈕
+		insert = new JButton("新增");
+		delete = new JButton("刪除");
+		select = new JButton("查詢");
+		refresh = new JButton("重整");
+		insert.setPreferredSize(new Dimension(60,20));
+		delete.setPreferredSize(new Dimension(60,20));
+		select.setPreferredSize(new Dimension(60,20));
+		refresh.setPreferredSize(new Dimension(60,20));
+		jPanel.add(insert, BorderLayout.EAST);
+		jPanel.add(delete, BorderLayout.EAST);
+		jPanel.add(select, BorderLayout.EAST);
+		jPanel.add(refresh, BorderLayout.EAST);
+		insert.addActionListener(this);
+		delete.addActionListener(this);
+		select.addActionListener(this);
+		refresh.addActionListener(this);
+		//label
+		fieldOfName = new JTextField(50);
+		fieldOfName.setText("請輸入遺產名稱");
+		fieldOfName.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfName);
+		fieldOfCountry = new JTextField(50);
+		fieldOfCountry.setText("請輸入遺產所屬國家");
+		fieldOfCountry.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfCountry);
+		fieldOfLocation = new JTextField(50);
+		fieldOfLocation.setText("請輸入遺產所在地");
+		fieldOfLocation.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfLocation);
+		fieldOfType = new JTextField(50);
+		fieldOfType.setText("請輸入遺產種類");
+		fieldOfType.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfType);
+		//調整視窗大小
+		jFrame.setSize(600,800);
+		jFrame.setVisible(true);
+	}
+	
+	//insert
+	public void addButtons() {
+		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton button = (JButton)e.getSource();
+		CRUD crud = new CRUD();
+		if (button == insert) {
+			String name = fieldOfName.getText();
+			String country = fieldOfCountry.getText();
+			String location = fieldOfLocation.getText();
+			String type = fieldOfType.getText();
+			crud.insertInfo(name, country, location, type);
+			JOptionPane.showMessageDialog(null, "已成功遞交"+ name+"的遺產申請");
+			
+		} else if (button == delete) {
+			
+		} else if (button == select) {
+			String name = fieldOfName.getText();
+			String country = fieldOfCountry.getText();
+			String location = fieldOfLocation.getText();
+			String type = fieldOfType.getText();
+			if (!"請輸入遺產名稱".equals(name)) {
+				 CustomTable tableByName = new CustomTable();
+				 tableByName.setData(crud.selectByname(name));
+	             jTable.setModel(tableByName);
+	             refreshTable();
+			} else if (country != null && type != null) {
+				CustomTable tableByCountryAndType = new CustomTable();
+				tableByCountryAndType.setData(crud.selectByCountryAndType(country, type));
+	             jTable.setModel(tableByCountryAndType);
+	             refreshTable();
+			} else if (country != null && "請輸入遺產種類".equals(type)) {
+				CustomTable tableByCountry = new CustomTable();
+				tableByCountry.setData(crud.selectBycountry(country));
+	             jTable.setModel(tableByCountry);
+	             refreshTable();
+			}
+			
+		} else if (button == refresh) {
+			CustomTable customTable = new CustomTable();
+			JTable jTable = new JTable(customTable);
+			JScrollPane jScrollPane = new JScrollPane(jTable);
+			jScrollPane.setPreferredSize(new Dimension(580, 450));
+			jPanel.add(jScrollPane, BorderLayout.NORTH);
+			jFrame.add(jPanel);
+		}
+		
+	}
+	
+	private void refreshTable() {
+        jTable.repaint();
+        jScrollPane.setViewportView(jTable);
+    }
+	
+}

@@ -1,0 +1,77 @@
+package go;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import utils.JDBCutil;
+
+public class aboutCRUD {
+	public static void main(String[] args) {
+		String beforename = "hi";
+		String aftername = "hello";
+		System.out.println("已成功更新\""+beforename+"\"為\""+aftername);
+	}
+	//新增(全部)
+	public void jdbcByInsert(String name, String country, String lacation, String type) {
+		String sql = "INTSERT INTO firstproject(name, country, lacation, type) VALUES(?,?,?,?)";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.setString(2, country);
+			statement.setString(3, lacation);
+			statement.setString(4, type);
+			statement.execute();
+			System.out.println("已成功遞交\""+name+"\"的申請");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	//刪除單筆資料
+	public void jdbcByDelete(String name) {
+		String sql = "DELETE FROM firstproject WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.execute();
+			System.out.println("已成功刪除\""+name+"\"的資料");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	//修改
+	public void jdbcByUpdate(String aftername, String beforename) {
+		String sql = "UPDATE firstproject SET name = ? WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, aftername);
+			statement.setString(2, beforename);
+			statement.execute();
+			System.out.println("已成功更新\""+beforename+"\"為\""+aftername);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+	
+	
+	
+	
+	
+}

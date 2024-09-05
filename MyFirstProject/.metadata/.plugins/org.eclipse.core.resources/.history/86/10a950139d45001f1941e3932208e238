@@ -1,0 +1,28 @@
+package dao;
+
+import java.util.List;
+
+public interface ServerTableDao {
+	
+	//新增
+	void insertInfo(String name, String country, String location, String type);
+	
+	//刪除
+	void deleteInfo(ServerTable serverTable);
+	
+	//更新
+	void updateName(ServerTable serverTable);
+	
+	//查詢全部
+	List<String> selectInfo(ServerTable serverTable);
+	
+	//用國家查詢
+	List<String> selectBycountry(String country);
+	
+	//用種類查詢
+	List<String> selectByType(String Type);
+	
+	//用國家&種類查詢
+	List<String> selectByCountryAndType(String country, String Type);
+	
+}

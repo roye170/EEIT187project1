@@ -1,0 +1,227 @@
+package core;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import dao.ServerTable;
+import dao.ServerTableDao;
+import utils.JDBCutil;
+
+public class CRUD implements ServerTableDao{
+
+	public static void main(String[] args) {
+		CRUD crud = new CRUD();
+		crud.scanInfo();
+	}
+	
+	//掃描使用者輸入的資料
+	public String scanInfo() {
+		String str = "";
+		try (Scanner scanner = new Scanner(System.in)){
+				str = scanner.nextLine();
+					scanner.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return str;
+	}
+	
+	@Override //新增資料
+	public void insertInfo(String name, String country, String location, String type) {
+		String sql = "INSERT INTO firstproject(name, country, location, type) VALUES(?,?,?,?)";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.setString(2, country);
+			statement.setString(3, location);
+			statement.setString(4, type);
+			statement.execute();
+			System.out.println("已成功遞交\""+name+"\"的申請");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+
+	@Override //刪除資料
+	public void deleteInfo(String name) {
+		String sql = "DELETE FROM firstproject WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, name);
+			statement.execute();
+			System.out.println("已成功刪除\""+name+"\"的資料");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+
+	@Override //更新資料
+	public void updateCountry(String name, String country) {
+		String sql = "UPDATE firstproject SET country = ? WHERE name = ?";
+		String check = "SELECT * FROM firstproject WHERE name = ?";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		PreparedStatement checkPreparedStatement = null;
+		ResultSet checkresult = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			checkPreparedStatement = connection.prepareStatement(check);
+			checkPreparedStatement.setString(1, name);
+			checkresult = checkPreparedStatement.executeQuery();
+			statement.setString(1, country);
+			statement.setString(2, name);
+			if (checkresult.next()) {
+				statement.execute();
+				System.out.println("已成功更新\""+name+"\"的國家為\""+country+"\"");
+			} else {
+				System.out.println("查無name為: "+name+" 的資料");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement);
+		}
+	}
+
+	@Override //選取全部資料
+	public List<String> selectInfo(ServerTable serverTable) {
+		String sql = "SELECT * FROM firstproject";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultset = null;
+		List<String> List = new ArrayList<String>();
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			resultset = statement.executeQuery();
+			while (resultset.next()) {
+				String name = "地名: " + resultset.getString("name");
+				String country = "國家: " + resultset.getString("country");
+				String location = "所在地: " + resultset.getString("location");
+				String year = "入選年份: " + resultset.getString("year");
+				String type = "遺產種類: " + resultset.getString("type");
+				List.add(name+","+country+","+location+","+year+","+type);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement,resultset);
+		}
+		return List;
+	}
+
+	@Override //用國家選資料
+	public List<String> selectBycountry(String country) {
+
+		String sql = "SELECT * FROM firstproject WHERE country LIKE \'%"+country+"%\'";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+			if (!resultSet.next()) {
+				System.out.println("查無資料");
+			}
+			while (resultSet.next()) {
+				String name = "地名: " + resultSet.getString("name");
+				String countryname = "國家: " + resultSet.getString("country");
+				String location = "所在地: " + resultSet.getString("location");
+				String year = "入選年份: " + resultSet.getString("year");
+				String type = "遺產種類: " + resultSet.getString("type");
+				list.add(name+","+country+","+location+","+year+","+type);
+				System.out.println(name+","+countryname+","+location+","+year+","+type);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement, resultSet);
+		}
+		return list;
+	}
+
+	@Override //用種類選資料
+	public List<String> selectByType(String Type) {
+		String sql = "SELECT * FROM firstproject WHERE type = ?";
+		ArrayList<String> list = new ArrayList<String>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, Type);
+			resultSet = statement.executeQuery();
+			if (!resultSet.next()) {
+				System.out.println("查無資料");
+			}
+			while (resultSet.next()) {
+				String name = "地名: " + resultSet.getString("name");
+				String country = "國家: " + resultSet.getString("country");
+				String location = "所在地: " + resultSet.getString("location");
+				String year = "入選年份: " + resultSet.getString("year");
+				String type = "遺產種類: " + resultSet.getString("type");
+				list.add(name+","+country+","+location+","+year+","+type);
+				System.out.println(name+","+country+","+location+","+year+","+type);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement, resultSet);
+		}
+		return list;
+	}
+
+	@Override //用國家&種類選資料
+	public List<String> selectByCountryAndType(String country, String Type) {
+
+		String sql = "SELECT * FROM firstproject WHERE country = ? AND type = ?";
+		ArrayList<String> list = new ArrayList<String>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = JDBCutil.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, country);
+			statement.setString(2, Type);
+			resultSet = statement.executeQuery();
+			if (!resultSet.next()) {
+				System.out.println("查無資料");
+			}
+			while (resultSet.next()) {
+				String name = "地名: " + resultSet.getString("name");
+				String countryname = "國家: " + resultSet.getString("country");
+				String location = "所在地: " + resultSet.getString("location");
+				String year = "入選年份: " + resultSet.getString("year");
+				String type = "遺產種類: " + resultSet.getString("type");
+				list.add(name+","+countryname+","+location+","+year+","+type);
+				System.out.println(name+","+countryname+","+location+","+year+","+type);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCutil.closeResource(connection, statement, resultSet);
+		}
+		return list;
+	}
+
+}

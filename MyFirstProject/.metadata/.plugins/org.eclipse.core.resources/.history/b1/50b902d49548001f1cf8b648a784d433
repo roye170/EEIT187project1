@@ -1,0 +1,177 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.security.PublicKey;
+
+import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
+
+import core.CRUD;
+
+public class GUI implements ActionListener, FocusListener {
+	
+	JFrame jFrame = new JFrame("世界遺產");
+	JPanel jPanel = new JPanel();
+	JTable jTable;
+	JScrollPane jScrollPane;
+	JButton insert;
+	JButton delete;
+	JButton select;
+	JButton update;
+	JTextField fieldOfName;
+	JTextField fieldOfCountry;
+	JTextField fieldOfLocation;
+	JTextField fieldOfType;
+	
+	public static void main(String[] args) {
+		GUI gui = new GUI();
+		gui.getTable();
+	}
+	
+	//table
+	public void getTable() {
+		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		CustomTable customTable = new CustomTable();
+		//表格
+		jTable = new JTable(customTable);
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(580, 450));
+		jPanel.add(jScrollPane, BorderLayout.NORTH);
+		jFrame.add(jPanel);
+		//按鈕
+		insert = new JButton("新增");
+		delete = new JButton("刪除");
+		select = new JButton("查詢");
+		update = new JButton("更新");
+		insert.setPreferredSize(new Dimension(60,20));
+		delete.setPreferredSize(new Dimension(60,20));
+		select.setPreferredSize(new Dimension(60,20));
+		update.setPreferredSize(new Dimension(60,20));
+		jPanel.add(insert, BorderLayout.EAST);
+		jPanel.add(delete, BorderLayout.EAST);
+		jPanel.add(select, BorderLayout.EAST);
+		jPanel.add(update, BorderLayout.EAST);
+		insert.addActionListener(this);
+		delete.addActionListener(this);
+		select.addActionListener(this);
+		update.addActionListener(this);
+		insert.addFocusListener(this);
+		delete.addFocusListener(this);
+		insert.addFocusListener(this);
+		select.addFocusListener(this);
+		update.addFocusListener(this);
+		//label
+		fieldOfName = new JTextField(50);
+		fieldOfName.setText("請輸入遺產名稱");
+		fieldOfName.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfName);
+		fieldOfCountry = new JTextField(50);
+		fieldOfCountry.setText("請輸入遺產所屬國家");
+		fieldOfCountry.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfCountry);
+		fieldOfLocation = new JTextField(50);
+		fieldOfLocation.setText("請輸入遺產所在地");
+		fieldOfLocation.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfLocation);
+		fieldOfType = new JTextField(50);
+		fieldOfType.setText("請輸入遺產種類");
+		fieldOfType.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfType);
+		//調整視窗大小
+		jFrame.setSize(600,800);
+		jFrame.setVisible(true);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton button = (JButton)e.getSource();
+		CRUD crud = new CRUD();
+		if (button == insert) {
+			String name = fieldOfName.getText();
+			String country = fieldOfCountry.getText();
+			String location = fieldOfLocation.getText();
+			String type = fieldOfType.getText();
+			crud.insertInfo(name, country, location, type);
+			JOptionPane.showMessageDialog(null, "已成功遞交"+ name+"的遺產申請");
+			updateTable();
+		} else if (button == delete) {
+			String name = fieldOfName.getText();
+			crud.deleteInfo(name);
+			JOptionPane.showMessageDialog(null, "已成功刪除"+ name+"的資料");
+			updateTable();
+		} else if (button == select) {
+			String name = fieldOfName.getText();
+			String country = fieldOfCountry.getText();
+			String type = fieldOfType.getText();
+			if (!"請輸入遺產名稱".equals(name) && !"".equals(name.trim())) {
+				 CustomTable tableByName = new CustomTable();
+				 tableByName.setData(crud.selectByname(name));
+	             jTable.setModel(tableByName);
+	             updateTable();
+			} else if (!"請輸入遺產所屬國家".equals(country) && !"請輸入遺產種類".equals(type)) {
+				CustomTable tableByCountryAndType = new CustomTable();
+				tableByCountryAndType.setData(crud.selectByCountryAndType(country, type));
+	             jTable.setModel(tableByCountryAndType);
+	             updateTable();
+			} else if (!"請輸入遺產所屬國家".equals(country)) {
+				CustomTable tableByCountry = new CustomTable();
+				tableByCountry.setData(crud.selectBycountry(country));
+	             jTable.setModel(tableByCountry);
+	             updateTable();
+			} else if (!"請輸入遺產種類".equals(type)) {
+				CustomTable tableByType = new CustomTable();
+				tableByType.setData(crud.selectByType(type));
+	             jTable.setModel(tableByType);
+	             updateTable();
+			}
+			
+		} else if (button == update) {
+			String name = fieldOfName.getText();
+			String country = fieldOfCountry.getText();
+			crud.updateCountry(name, country);
+			JOptionPane.showMessageDialog(null, "已成功更新"+ name+"的國家");
+			updateTable();
+		}
+		
+	}
+	
+	private void updateTable() {
+        jTable.repaint();
+        jScrollPane.setViewportView(jTable);
+    }
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		if (fieldOfName.getText().equals("請輸入遺產名稱")) {
+			fieldOfName.setText("");
+        } else if (fieldOfCountry.getText().equals("請輸入遺產所屬國家")) {
+        	fieldOfCountry.setText("");
+        } else if (fieldOfLocation.getText().equals("請輸入遺產所在地")) {
+        	fieldOfLocation.setText("");
+        } else if (fieldOfType.getText().equals("請輸入遺產種類")) {
+        	fieldOfType.setText("");
+        }
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		 if (fieldOfName.getText().isEmpty()) {
+			 fieldOfName.setText("請輸入遺產名稱");
+         } else if (fieldOfCountry.getText().isEmpty()) {
+        	 fieldOfCountry.setText("請輸入遺產所屬國家");
+         } else if (fieldOfLocation.getText().isEmpty()) {
+        	 fieldOfLocation.setText("請輸入遺產所在地");
+         } else if (fieldOfType.getText().isEmpty()) {
+        	 fieldOfType.setText("請輸入遺產種類");
+         }
+	}
+	
+}

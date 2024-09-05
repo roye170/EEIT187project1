@@ -1,0 +1,11 @@
+package dao;
+
+import java.sql.Date;
+
+public class serverTable {
+	String name;
+	String country;
+	String location;
+	Date year;
+	String type;
+}

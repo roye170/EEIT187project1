@@ -1,0 +1,48 @@
+package gui;
+
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+import core.CRUD;
+
+public class CustomTable extends AbstractTableModel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private CRUD crud = new CRUD();
+	private String[] columns = {"name","country","location","year","type"};
+ 	
+	@Override
+	public int getRowCount() {
+		CRUD crud = new CRUD();
+		List<String> row = crud.selectInfo();
+		return row.size();
+	}
+
+	@Override
+	public int getColumnCount() {
+		return columns.length;
+	}
+
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		String list =  crud.selectInfo().get(rowIndex);
+		String[] column = list.split(",");
+		switch (columnIndex) {
+		case 0:
+			return column[0];
+		case 1:
+			return column[1];
+		case 2:
+			return column[2];
+		case 3:
+			return column[3];
+		case 4:
+			return column[4];
+		}
+		return null;
+	}
+
+}

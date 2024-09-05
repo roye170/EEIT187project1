@@ -1,0 +1,94 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.security.PublicKey;
+
+import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
+
+public class GUI implements ActionListener {
+	
+	JFrame jFrame = new JFrame("世界遺產");
+	JPanel jPanel = new JPanel();
+	
+	public static void main(String[] args) {
+		GUI gui = new GUI();
+		gui.getTable();
+	}
+	
+	//table
+	public void getTable() {
+		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		CustomTable customTable = new CustomTable();
+		//表格
+		JTable jTable = new JTable(customTable);
+		JScrollPane jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(580, 450));
+		jPanel.add(jScrollPane, BorderLayout.NORTH);
+		jFrame.add(jPanel);
+		//按鈕
+		JButton insert = new JButton("新增");
+		JButton delete = new JButton("刪除");
+		JButton select = new JButton("查詢");
+		insert.setPreferredSize(new Dimension(60,20));
+		delete.setPreferredSize(new Dimension(60,20));
+		select.setPreferredSize(new Dimension(60,20));
+		jPanel.add(insert, BorderLayout.EAST);
+		jPanel.add(delete, BorderLayout.EAST);
+		jPanel.add(select, BorderLayout.EAST);
+		insert.addActionListener(this);
+		delete.addActionListener(this);
+		select.addActionListener(this);
+		new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButton button = (JButton)e.getSource();
+				if (button == insert) {
+					//DefaultTableModel tableModel = new DefaultTableModel();
+					//tableModel.addRow(null);
+					JTextField jTextField = new JTextField(5);
+					jTextField.setPreferredSize(new Dimension(60,20));
+					//jTable.add(jTextField.getText());
+					
+				} else if (button == delete) {
+					
+				} else if (button == select) {
+					
+				}
+			}
+		};
+		
+		//label
+		DefaultTableModel tableModel = new DefaultTableModel();
+		JTextField fieldOfName = new JTextField(50);
+		fieldOfName.setText("請輸入遺產名稱");
+		fieldOfName.setPreferredSize(new Dimension(60,20));
+		JTextField fieldOfCountry = new JTextField(50);
+		fieldOfCountry.setText("請輸入遺產所屬國家");
+		fieldOfCountry.setPreferredSize(new Dimension(60,20));
+		jPanel.add(fieldOfCountry);
+		//調整視窗大小
+		jFrame.setSize(600,600);
+		jFrame.setVisible(true);
+	}
+	
+	//insert
+	public void addButtons() {
+		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

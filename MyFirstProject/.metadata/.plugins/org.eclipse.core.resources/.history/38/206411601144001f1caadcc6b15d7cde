@@ -1,0 +1,4 @@
+#sql server info
+user = roye
+password = 1234
+url = jdbc:sqlserver://localhost:1433;DatabaseName=jdbcLab;encrypt=false

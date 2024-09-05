@@ -1,0 +1,15 @@
+package core;
+
+public class TestCRUD {
+
+	public static void main(String[] args) {
+		CRUD2 crud2 = new CRUD2();
+		//crud2.insertInfo("test", "test", "test", "test");
+		//crud2.deleteInfo("test");
+		//crud2.updateCountry("testsuccess", "test");
+		//crud2.selectBycountry("中國");
+		//crud2.selectByType("文化遺產");
+		//crud2.selectByCountryAndType("中國", "文化遺產");
+	}
+
+}

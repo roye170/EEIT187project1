@@ -1,0 +1,19 @@
+package dao;
+
+import java.util.List;
+
+public interface serverTableDao {
+	
+	//新增
+	void insertInfo(serverTable serverTable);
+	
+	//刪除
+	void deleteInfo(serverTable serverTable);
+	
+	//更新
+	void updateInfo(serverTable serverTable);
+	
+	//查詢
+	List<serverTable> selectInfo(serverTable serverTable);
+	
+}

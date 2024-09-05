@@ -1,0 +1,55 @@
+package core;
+
+import java.sql.Date;
+
+public class ServerTable {
+	private String name;
+	private String country;
+	private String location;
+	private String year;
+	private String type;
+	
+	public ServerTable(String name, String country, String location, String year, String type) {
+		this.name = name;
+		this.country = country;
+		this.location = location;
+		this.year = year;
+		this.type = type;
+	}
+	
+	public ServerTable(String name, String country, String location, String type) {
+		this.name = name;
+		this.country = country;
+		this.location = location;
+		this.type = type;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getYear() {
+		return year;
+	}
+
+}
